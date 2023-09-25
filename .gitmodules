@@ -1,0 +1,6 @@
+[submodule "tooling"]
+	path = tooling
+	url = https://github.com/CoolLibs/tooling
+[submodule "rtmidi"]
+	path = rtmidi
+	url = https://github.com/thestk/rtmidi
