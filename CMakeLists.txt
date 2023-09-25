@@ -12,13 +12,17 @@ target_sources(RtMidiW PRIVATE rtmidi/RtMidi.cpp)
 install(FILES "rtmidi/LICENSE" DESTINATION "license/rtmidi")
 
 # ---Link with available backend---
-# Check for Jack (any OS)
-find_library(JACK_LIB jack)
-find_package(PkgConfig)
-pkg_check_modules(jack jack)
+# Check for Jack and Alsa (Linux and Mac)
+if(NOT WIN32)
+    find_package(ALSA)
 
-if(JACK_LIB OR jack_FOUND)
-    set(HAVE_JACK TRUE)
+    find_library(JACK_LIB jack)
+    find_package(PkgConfig)
+    pkg_check_modules(jack jack)
+
+    if(JACK_LIB OR jack_FOUND)
+        set(HAVE_JACK TRUE)
+    endif()
 endif()
 
 # Necessary for Windows
@@ -37,6 +41,13 @@ set(API_LIST)
 set(PACKAGE_DEPENDENCIES)
 
 # Tweak API-specific configuration.
+
+# API Options
+option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
+option(RTMIDI_API_WINMM "Compile with WINMM support." ${WIN32})
+option(RTMIDI_API_CORE "Compile with CoreMIDI support." ${APPLE})
+option(RTMIDI_API_AMIDI "Compile with Android support." ${ANDROID})
+option(RTMIDI_API_ALSA "Compile with ALSA support." ${ALSA})
 
 # Jack
 if(RTMIDI_API_JACK)
@@ -69,8 +80,6 @@ if(RTMIDI_API_JACK)
 endif()
 
 # ALSA
-find_package(ALSA)
-
 if(ALSA_FOUND OR ALSA)
     set(NEED_PTHREAD ON)
     list(APPEND INCDIRS ${ALSA_INCLUDE_DIR})
@@ -80,13 +89,6 @@ if(ALSA_FOUND OR ALSA)
     list(APPEND API_LIST "alsa")
     list(APPEND PACKAGE_DEPENDENCIES "find_dependency(ALSA)")
 endif()
-
-# API Options
-option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
-option(RTMIDI_API_WINMM "Compile with WINMM support." ${WIN32})
-option(RTMIDI_API_CORE "Compile with CoreMIDI support." ${APPLE})
-option(RTMIDI_API_AMIDI "Compile with Android support." ${ANDROID})
-option(RTMIDI_API_ALSA "Compile with ALSA support." ${ALSA})
 
 # WinMM
 if(RTMIDI_API_WINMM)
