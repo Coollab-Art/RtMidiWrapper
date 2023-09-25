@@ -16,13 +16,13 @@ install(FILES "rtmidi/LICENSE" DESTINATION "license/rtmidi")
 if(NOT WIN32)
     find_package(ALSA)
 
-    find_library(JACK_LIB jack)
-    find_package(PkgConfig)
-    pkg_check_modules(jack jack)
+    # find_library(JACK_LIB jack)
+    # find_package(PkgConfig)
+    # pkg_check_modules(jack jack)
 
-    if(JACK_LIB OR jack_FOUND)
-        set(HAVE_JACK TRUE)
-    endif()
+    # if(JACK_LIB OR jack_FOUND)
+    # set(HAVE_JACK TRUE)
+    # endif()
 endif()
 
 # Necessary for Windows
@@ -43,41 +43,41 @@ set(PACKAGE_DEPENDENCIES)
 # Tweak API-specific configuration.
 
 # API Options
-option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
+# option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
 option(RTMIDI_API_WINMM "Compile with WINMM support." ${WIN32})
 option(RTMIDI_API_CORE "Compile with CoreMIDI support." ${APPLE})
 option(RTMIDI_API_AMIDI "Compile with Android support." ${ANDROID})
 option(RTMIDI_API_ALSA "Compile with ALSA support." ${ALSA})
 
-# Jack
-if(RTMIDI_API_JACK)
-    if(NOT HAVE_JACK)
-        message(FATAL_ERROR "Jack API requested but no Jack dev libraries found")
-    endif()
+# # Jack
+# if(RTMIDI_API_JACK)
+# if(NOT HAVE_JACK)
+# message(FATAL_ERROR "Jack API requested but no Jack dev libraries found")
+# endif()
 
-    set(NEED_PTHREAD ON)
-    list(APPEND PKGCONFIG_REQUIRES "jack")
-    list(APPEND API_DEFS "-D__UNIX_JACK__")
-    list(APPEND API_LIST "jack")
+# set(NEED_PTHREAD ON)
+# list(APPEND PKGCONFIG_REQUIRES "jack")
+# list(APPEND API_DEFS "-D__UNIX_JACK__")
+# list(APPEND API_LIST "jack")
 
-    if(jack_FOUND)
-        list(APPEND LINKLIBS ${jack_LIBRARIES})
-        list(APPEND INCDIRS ${jack_INCLUDEDIR})
-    else()
-        list(APPEND LINKLIBS ${JACK_LIB})
-    endif()
+# if(jack_FOUND)
+# list(APPEND LINKLIBS ${jack_LIBRARIES})
+# list(APPEND INCDIRS ${jack_INCLUDEDIR})
+# else()
+# list(APPEND LINKLIBS ${JACK_LIB})
+# endif()
 
-    # Check for jack_port_rename
-    include(CheckSymbolExists)
-    set(tmp_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
-    list(APPEND CMAKE_REQUIRED_LIBRARIES jack)
-    check_symbol_exists(jack_port_rename ${jack_INCLUDEDIR}/jack/jack.h JACK_HAS_PORT_RENAME)
-    set(CMAKE_REQUIRED_LIBRARIES ${tmp_CMAKE_REQUIRED_LIBRARIES})
+# # Check for jack_port_rename
+# include(CheckSymbolExists)
+# set(tmp_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+# list(APPEND CMAKE_REQUIRED_LIBRARIES jack)
+# check_symbol_exists(jack_port_rename ${jack_INCLUDEDIR}/jack/jack.h JACK_HAS_PORT_RENAME)
+# set(CMAKE_REQUIRED_LIBRARIES ${tmp_CMAKE_REQUIRED_LIBRARIES})
 
-    if(JACK_HAS_PORT_RENAME)
-        list(APPEND API_DEFS "-DJACK_HAS_PORT_RENAME")
-    endif()
-endif()
+# if(JACK_HAS_PORT_RENAME)
+# list(APPEND API_DEFS "-DJACK_HAS_PORT_RENAME")
+# endif()
+# endif()
 
 # ALSA
 if(ALSA_FOUND OR ALSA)
@@ -134,7 +134,6 @@ endif()
 
 # Set compile-time definitions
 target_compile_definitions(RtMidiW PRIVATE ${API_DEFS})
-target_compile_definitions(RtMidiW PRIVATE RTMIDI_EXPORT)
 target_link_libraries(RtMidiW
     PUBLIC ${PUBLICLINKLIBS}
     PRIVATE ${LINKLIBS}
