@@ -81,6 +81,13 @@ if(ALSA_FOUND OR ALSA)
     list(APPEND PACKAGE_DEPENDENCIES "find_dependency(ALSA)")
 endif()
 
+# API Options
+option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
+option(RTMIDI_API_WINMM "Compile with WINMM support." ${WIN32})
+option(RTMIDI_API_CORE "Compile with CoreMIDI support." ${APPLE})
+option(RTMIDI_API_AMIDI "Compile with Android support." ${ANDROID})
+option(RTMIDI_API_ALSA "Compile with ALSA support." ${ALSA})
+
 # WinMM
 if(RTMIDI_API_WINMM)
     list(APPEND API_DEFS "-D__WINDOWS_MM__")
@@ -130,10 +137,3 @@ target_link_libraries(RtMidiW
     PUBLIC ${PUBLICLINKLIBS}
     PRIVATE ${LINKLIBS}
 )
-
-# API Options
-option(RTMIDI_API_JACK "Compile with JACK support." ${HAVE_JACK})
-option(RTMIDI_API_WINMM "Compile with WINMM support." ${WIN32})
-option(RTMIDI_API_CORE "Compile with CoreMIDI support." ${APPLE})
-option(RTMIDI_API_ALSA "Compile with ALSA support." ${ALSA})
-option(RTMIDI_API_AMIDI "Compile with Android support." ${ANDROID})
