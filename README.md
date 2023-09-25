@@ -1,5 +1,7 @@
 # RtMidiW
 
+A lightweight wrapper around [rtmidi](https://github.com/thestk/rtmidi) that automates OS detection and selection.
+
 ## Including
 
 To add this library to your project, simply add these two lines to your *CMakeLists.txt*:
