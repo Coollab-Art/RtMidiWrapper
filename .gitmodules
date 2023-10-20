@@ -3,4 +3,4 @@
 	url = https://github.com/CoolLibs/tooling
 [submodule "rtmidi"]
 	path = rtmidi
-	url = https://github.com/thestk/rtmidi
+	url = https://github.com/CoolLibs/rtmidi
