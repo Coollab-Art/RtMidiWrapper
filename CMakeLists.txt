@@ -138,3 +138,5 @@ target_link_libraries(RtMidiW
     PUBLIC ${PUBLICLINKLIBS}
     PRIVATE ${LINKLIBS}
 )
+
+install(FILES "rtmidi/LICENSE" DESTINATION "license/rtmidi")
