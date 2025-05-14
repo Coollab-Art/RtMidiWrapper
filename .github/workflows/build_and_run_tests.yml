@@ -9,7 +9,7 @@ on:
 env:
   cmake_configure_args: ""
   cmakelists_folder: tests
-  cmake_target: mylib-tests
+  cmake_target: RtMidiW-tests
 
 jobs:
   build-and-run-tests:
