@@ -72,6 +72,12 @@ jobs:
         with:
           key: ${{matrix.config.name}}-${{matrix.build_type}}
 
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libasound2-dev
+
       - name: Build
         uses: lukka/run-cmake@v3
         with:
